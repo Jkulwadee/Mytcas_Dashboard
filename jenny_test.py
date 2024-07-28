@@ -97,10 +97,13 @@ app.layout = html.Div([
         dcc.Graph(id='map')
     ], style={'padding': '20px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '20px'}),
 
+    html.Div(id='university-details', style={'color': '#ffffff', 'padding': '20px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '20px'}),
+    
     html.Div([
-        html.Div(id='university-details', style={'color': '#ffffff'}),
-        dcc.Graph(id='pie-chart'),
-        dcc.Graph(id='bar-chart')
+        html.Div([
+            dcc.Graph(id='pie-chart', style={'display': 'inline-block', 'width': '49%'}),
+            dcc.Graph(id='bar-chart', style={'display': 'inline-block', 'width': '49%'})
+        ], style={'display': 'flex', 'justify-content': 'space-between', 'width': '100%'})
     ], style={'padding': '20px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '20px'}),
 
     html.Div([
@@ -206,6 +209,7 @@ def update_dashboard(selected_uni, selected_course):
             pie_fig = px.pie(title="No data available")
 
         pie_fig.update_layout(paper_bgcolor='#1E0E2C', font_color='#ffffff')
+        pie_fig.update_traces(marker=dict(line=dict(width=2, color='black')))
 
         # Update the bar chart using the same data as the pie chart
         if pie_values:
@@ -215,6 +219,7 @@ def update_dashboard(selected_uni, selected_course):
             bar_fig = px.bar(title="No data available")
 
         bar_fig.update_layout(paper_bgcolor='#1E0E2C', font_color='#ffffff')
+        bar_fig.update_traces(marker=dict(line=dict(width=2, color='black')))
 
         # Update the table
         data = filtered_df.drop(columns=['Latitude', 'Longitude']).to_dict('records')
