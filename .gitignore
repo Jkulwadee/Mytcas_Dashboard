@@ -4,6 +4,4 @@ venv
 myenv
 .env
 *.cfg
-jenny.py
-test.py
 cache
