@@ -112,7 +112,7 @@ app.layout = html.Div([
         html.H2("ตารางแสดงข้อมูลเกี่ยวกับมหาลัย", style={'textAlign': 'center', 'color': '#ffffff'}),
         dash_table.DataTable(
             id='data-table',
-            columns=[{"name": i, "id": i} for i in df.columns if i not in ['ชื่อมหาลัย','Latitude', 'Longitude']],
+            columns=[{"name": i, "id": i} for i in df.columns if i not in ['Latitude', 'Longitude']],
             style_table={'overflowX': 'auto'},
             style_cell={'textAlign': 'left', 'backgroundColor': '#210535', 'color': '#ffffff'},
             style_header={'backgroundColor': '#341259', 'fontWeight': 'bold'},
