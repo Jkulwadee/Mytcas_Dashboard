@@ -24,7 +24,7 @@ app = dash.Dash(__name__)
 app.layout = html.Div([
     html.Header([
         html.H1(
-            "University Dashboard",
+            "ข้อมูลเกี่ยวกับสถาบันที่เปิดหลักสูตรวิศวกรรมศาสตร์ ปี 2568",
             style={
                 'textAlign': 'left',
                 'color': '#ffffff',
@@ -107,7 +107,7 @@ app.layout = html.Div([
     ], style={'padding': '20px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '20px'}),
 
     html.Div([
-        html.H2("University Data Table", style={'textAlign': 'center', 'color': '#ffffff'}),
+        html.H2("ตารางแสดงข้อมูลเกี่ยวกับมหาลัย", style={'textAlign': 'center', 'color': '#ffffff'}),
         dash_table.DataTable(
             id='data-table',
             columns=[{"name": i, "id": i} for i in df.columns if i not in ['Latitude', 'Longitude']],
@@ -203,7 +203,7 @@ def update_dashboard(selected_uni, selected_course):
             pie_values = [value for value in admission_types.values if value != 0]
             pie_fig = px.pie(
                 names=pie_labels, values=pie_values, 
-                title=f"Distribution of Admission Types for {selected_course}" if selected_course else "Distribution of Admission Types"
+                title=f"แผนภูมิวงกลมแสดงจำนวนการรับนักศึกษาในแต่ละรอบ ของ {selected_course}" if selected_course else "แผนภูมิวงกลมแสดงจำนวนการรับนักศึกษาในแต่ละรอบ"
             )
         else:
             pie_fig = px.pie(title="No data available")
@@ -214,7 +214,7 @@ def update_dashboard(selected_uni, selected_course):
         # Update the bar chart using the same data as the pie chart
         if pie_values:
             bar_fig = px.bar(x=pie_labels, y=pie_values, color=pie_labels, 
-                             title="Distribution of Admission Types")
+                             title="แผนภูมิแท่งแสดงจำนวนการรับนักศึกษาในแต่ละรอบ")
         else:
             bar_fig = px.bar(title="No data available")
 
