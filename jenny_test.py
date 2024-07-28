@@ -67,6 +67,10 @@ app.layout = html.Div([
     ], style={'textAlign': 'center', 'padding': '20px', 'backgroundColor': '#210535', 'margin-bottom': '20px'}),
 
     html.Div([
+        dcc.Graph(id='map')
+    ], style={'padding': '30px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '30px', 'width': '90%'}),
+    
+    html.Div([
         html.Label(
             "เลือกสาขา:",
             style={
@@ -94,9 +98,6 @@ app.layout = html.Div([
         ),
     ], style={'textAlign': 'center', 'padding': '20px', 'backgroundColor': '#210535', 'margin-bottom': '20px'}),
 
-    html.Div([
-        dcc.Graph(id='map')
-    ], style={'padding': '30px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '30px', 'width': '90%'}),
 
     html.Div(id='university-details', style={'color': '#ffffff', 'padding': '20px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '20px'}),
     
@@ -227,7 +228,7 @@ def update_dashboard(selected_uni, selected_course):
 
         # Update the university details
         if not filtered_df.empty:
-            details = filtered_df.to_dict('records')[0]
+            details = filtered_df.drop(columns=['Latitude', 'Longitude']).to_dict('records')[0]
             detail_items = [html.P(f"{key}: {value}") for key, value in details.items()]
             university_details = html.Div(detail_items, style={'color': '#ffffff'})
         else:
