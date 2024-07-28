@@ -26,15 +26,15 @@ app.layout = html.Div([
         html.H1(
             "ข้อมูลเกี่ยวกับสถาบันที่เปิดหลักสูตรวิศวกรรมศาสตร์ ปี 2568",
             style={
-                'textAlign': 'left',
+                'textAlign': 'center',
                 'color': '#ffffff',
                 'font-family': 'Arial, sans-serif',
-                'padding': '20px',
+                'padding': '30px',
                 'backgroundColor': '#210535',
                 'margin': '0'
             }
         ),
-    ], style={'backgroundColor': '#210535', 'padding-left': '20px'}),
+    ], style={'backgroundColor': '#210535', 'padding-left': '30px'}),
 
     html.Div([
         html.Label(
@@ -48,6 +48,7 @@ app.layout = html.Div([
                 'text-align': 'left',
                 'margin-left': '20px'
             }
+        
         ),
         dcc.Dropdown(
             id='university-dropdown',
@@ -65,6 +66,10 @@ app.layout = html.Div([
         ),
     ], style={'textAlign': 'center', 'padding': '20px', 'backgroundColor': '#210535', 'margin-bottom': '20px'}),
 
+    html.Div([
+        dcc.Graph(id='map')
+    ], style={'padding': '30px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '30px', 'width': '90%'}),
+    
     html.Div([
         html.Label(
             "เลือกสาขา:",
@@ -93,9 +98,6 @@ app.layout = html.Div([
         ),
     ], style={'textAlign': 'center', 'padding': '20px', 'backgroundColor': '#210535', 'margin-bottom': '20px'}),
 
-    html.Div([
-        dcc.Graph(id='map')
-    ], style={'padding': '20px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '20px'}),
 
     html.Div(id='university-details', style={'color': '#ffffff', 'padding': '20px', 'backgroundColor': '#1E0E2C', 'margin-bottom': '20px'}),
     
@@ -110,7 +112,7 @@ app.layout = html.Div([
         html.H2("ตารางแสดงข้อมูลเกี่ยวกับมหาลัย", style={'textAlign': 'center', 'color': '#ffffff'}),
         dash_table.DataTable(
             id='data-table',
-            columns=[{"name": i, "id": i} for i in df.columns if i not in ['Latitude', 'Longitude']],
+            columns=[{"name": i, "id": i} for i in df.columns if i not in ['ชื่อมหาลัย','Latitude', 'Longitude']],
             style_table={'overflowX': 'auto'},
             style_cell={'textAlign': 'left', 'backgroundColor': '#210535', 'color': '#ffffff'},
             style_header={'backgroundColor': '#341259', 'fontWeight': 'bold'},
@@ -163,7 +165,7 @@ def update_dashboard(selected_uni, selected_course):
         # Show a message and the totals when no university is selected
         map_fig = px.scatter_mapbox(
             lat=[0], lon=[0], hover_name=["Please Enter Information"],
-            zoom=1, height=400
+            zoom=1, height=750
         )
         map_fig.update_layout(mapbox_style="carto-positron")  # Change the map style
         map_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
@@ -187,9 +189,9 @@ def update_dashboard(selected_uni, selected_course):
         # Update the map with different colors and smaller size
         map_fig = px.scatter_mapbox(
             filtered_df, lat="Latitude", lon="Longitude", hover_name="ชื่อมหาลัย",
-            hover_data={"ชื่อมหาลัย": True, "วิทยาเขต": True, "Latitude": False, "Longitude": False},
+            hover_data={"ชื่อมหาลัย": False, "วิทยาเขต": True, "Latitude": False, "Longitude": False},
             color="ชื่อมหาลัย", color_continuous_scale=px.colors.cyclical.IceFire,
-            zoom=5, height=400, size_max=10, size=[5]*len(filtered_df),
+            zoom=5, height=750, size_max=10, size=[5]*len(filtered_df),
             center={"lat": 13.736717, "lon": 100.523186}  # Center the map on Thailand
         )
         map_fig.update_layout(mapbox_style="carto-positron")  # Change the map style
@@ -226,7 +228,7 @@ def update_dashboard(selected_uni, selected_course):
 
         # Update the university details
         if not filtered_df.empty:
-            details = filtered_df.to_dict('records')[0]
+            details = filtered_df.drop(columns=['Latitude', 'Longitude']).to_dict('records')[0]
             detail_items = [html.P(f"{key}: {value}") for key, value in details.items()]
             university_details = html.Div(detail_items, style={'color': '#ffffff'})
         else:
